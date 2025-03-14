@@ -5,12 +5,16 @@ const checkAuth = require('../middleware/auth')
 const CourseController = require('../controllers/CourseController')
 const ContactController = require('../controllers/ContactController')
 const AdminController = require('../controllers/admin/AdminController')
+const adminRole = require('../middleware/adminRole')
+const isLogin = require('../middleware/isLogin')
+const authRoles = require('../middleware/adminRole')
+
 
 // rounts
 route.get('/home', checkAuth, FrontController.home)
 route.get('/contact', checkAuth, FrontController.contact)
 route.get('/about', checkAuth, FrontController.about)
-route.get('/', FrontController.login)
+route.get('/',isLogin, FrontController.login)
 route.get('/register', FrontController.register)
 
 //insert data   
@@ -38,23 +42,23 @@ route.post('/updateProfile',checkAuth, FrontController.updateProfile)
 route.post("/createContact", checkAuth, ContactController.createContact);
 
 //admincontroller
-route.get("/admin/dashboard", checkAuth, AdminController.dashboard);
-route.get('/admin/courseDisplay',checkAuth,AdminController.courseDisplay)
-route.post('/admin/update_status/:id', checkAuth, AdminController.update_status)
-route.get('/admin/ContactDisplay', checkAuth, AdminController.ContactDisplay)
-route.get('/Viewadmin/:_id', checkAuth, AdminController.Viewadmin)
-route.get('/Editadmin/:_id', checkAuth, AdminController.Editadmin)
-route.get("/Deleteadmin/:_id", checkAuth, AdminController.Deleteadmin);
-route.post("/Updateadmin/:_id", checkAuth, AdminController.Updateadmin);
+route.get("/admin/dashboard", checkAuth,adminRole('admin'), AdminController.dashboard);
+route.get('/admin/courseDisplay',checkAuth, adminRole('admin'), AdminController.courseDisplay)
+route.post('/admin/update_status/:id', checkAuth,adminRole('admin'),  AdminController.update_status)
+route.get('/admin/ContactDisplay', checkAuth,adminRole('admin'),  AdminController.ContactDisplay)
+route.get('/Viewadmin/:_id', checkAuth,adminRole('admin'),  AdminController.Viewadmin)
+route.get('/Editadmin/:_id', checkAuth,adminRole('admin'),  AdminController.Editadmin)
+route.get("/Deleteadmin/:_id", checkAuth,adminRole('admin'),  AdminController.Deleteadmin);
+route.post("/Updateadmin/:_id", checkAuth,adminRole('admin'),  AdminController.Updateadmin);
 //Admin profile update
 // route.get('/admin/profile', checkAuth, AdminController.profile)
-route.get("/admin/profile_update", checkAuth, AdminController.profile_update);
-route.post("/admin/changePassword", checkAuth, AdminController.changePassword);
-route.get("/admin/update_pass", checkAuth, AdminController.update_pass);
-route.post("/admin/updateProfile", checkAuth, AdminController.updateProfile);
-route.get("/admin/approvedUsers", checkAuth, AdminController.ApprovedUsers);
-route.get("/admin/pendingUsers", checkAuth, AdminController.PendingUsers);
-route.get("/admin/rejectedUsers", checkAuth, AdminController.RejectUsers);
+route.get("/admin/profile_update", checkAuth,adminRole('admin'),  AdminController.profile_update);
+route.post("/admin/changePassword", checkAuth,adminRole('admin'),  AdminController.changePassword);
+route.get("/admin/update_pass", checkAuth,adminRole('admin'),  AdminController.update_pass);
+route.post("/admin/updateProfile", checkAuth,adminRole('admin'),  AdminController.updateProfile);
+route.get("/admin/approvedUsers", checkAuth,adminRole('admin'),  AdminController.ApprovedUsers);
+route.get("/admin/pendingUsers", checkAuth,adminRole('admin'),  AdminController.PendingUsers);
+route.get("/admin/rejectedUsers", checkAuth,adminRole('admin'),  AdminController.RejectUsers);
 
 
 //forgot password
